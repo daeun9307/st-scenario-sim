@@ -1,20 +1,13 @@
-import { saveSettingsDebounced, getContext, extension_settings } from '../../../extensions.js';
-import { callGenericAI, showOverlay } from '../../../../script.js';
+// 가장 표준적이고 안전한 경로 설정입니다.
+import { saveSettingsDebounced, getContext, extension_settings } from "../../../extensions.js";
+import { callGenericAI, showOverlay } from "../../../../script.js";
 
 const MODULE_NAME = "scenario_sim_pro";
 
-// 사용자님이 주신 믹스테이프 예시를 기본값으로 설정
-const defaultScenario = `**Situation:**
-- {{char}} made a mixtape for {{user}}, filled with songs that subtly express {{char}}'s feelings for {{user}}.
-- To create a thoughtful mixtape based on {{char}}'s description and their relationship with {{user}} 
-- Include various genres about love, desire, and lovers, such as jazz, pop, rap, and ballads.
+// 로딩 여부를 확인하기 위해 콘솔에 로그를 남깁니다.
+console.log("Scenario Sim Pro: Extension Loading...");
 
----
-
-**Format:**
-- What are the songs {{char}} included in the mixtape?
-- (Song Name): (Lyric line expressing his feelings noted by {{char}}), (Reason for including the song noted by {{char}})
-- {{char}}'s dialogue: (Write {{char}}'s reaction in dialogue form.)`;
+const defaultScenario = `**Situation:**\n- {{char}} made a mixtape for {{user}}, filled with songs that subtly express {{char}}'s feelings for {{user}}.\n- To create a thoughtful mixtape based on {{char}}'s description and their relationship with {{user}}\n- Include various genres about love, desire, and lovers, such as jazz, pop, rap, and ballads.\n\n---\n\n**Format:**\n- What are the songs {{char}} included in the mixtape?\n- (Song Name): (Lyric line expressing his feelings noted by {{char}}), (Reason for including the song noted by {{char}})\n- {{char}}'s dialogue: (Write {{char}}'s reaction in dialogue form.)`;
 
 if (!extension_settings[MODULE_NAME]) {
     extension_settings[MODULE_NAME] = { 
@@ -62,7 +55,7 @@ function renderSimManager() {
     $('#add-sim-btn').on('click', () => { settings.simulations.unshift({ title: "", result: "" }); saveSettingsDebounced(); renderSimManager(); });
     $('.sim-input').on('change', function() { settings.simulations[$(this).data('index')].title = $(this).val(); saveSettingsDebounced(); });
     $('.run-sim-btn').on('click', function() { runSimulation($(this).data('index')); });
-    $('.del-sim-btn').on('click', function() { if(confirm("삭제할까요?")) { settings.simulations.splice($(this).data('index'), 1); saveSettingsDebounced(); renderSimManager(); } });
+    $('.del-sim-btn').on('click', function() { if(confirm("삭제하시겠습니까?")) { settings.simulations.splice($(this).data('index'), 1); saveSettingsDebounced(); renderSimManager(); } });
 }
 
 async function runSimulation(index) {
@@ -73,7 +66,7 @@ async function runSimulation(index) {
     const resultDiv = $(`#result-${index}`);
     resultDiv.html(`<span style="color:cyan;">${T.loading}</span>`).show();
 
-    const prompt = `[SYSTEM: SCENARIO SIMULATION]\n# CHAR: ${context.characters[context.characterId].name}\n# DESC: ${context.characters[context.characterId].description}\n# HISTORY: ${context.chat.slice(-10).map(m => m.mes).join('\n')}\n\n### REQUEST:\n${sim.title}`;
+    const prompt = `[SYSTEM: SCENARIO SIMULATION]\n# CHAR: ${context.characters[context.characterId].name}\n# DESC: ${context.characters[context.characterId].description}\n# HISTORY: ${context.chat.slice(-10).map(m => m.mes).join('\\n')}\n\n### REQUEST:\n${sim.title}`;
 
     try {
         const response = await callGenericAI(prompt, settings.apiEndpoint || null); 
@@ -83,7 +76,9 @@ async function runSimulation(index) {
     } catch (err) { resultDiv.text("Error: " + err); }
 }
 
+// 아이콘을 메뉴 바에 추가합니다. (CD 모양 아이콘)
 jQuery(() => {
+    console.log("Scenario Sim Pro: Registering icon...");
     const btn = $('<div class="fa-solid fa-compact-disc nav-item" title="Scenario Sim"></div>').on('click', renderSimManager);
     $('#extensions_menu').append(btn);
 });
