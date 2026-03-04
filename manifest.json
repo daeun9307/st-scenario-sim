@@ -1,0 +1,12 @@
+{
+    "display_name": "Scenario Sim Pro",
+    "loading_order": 10,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Custom",
+    "version": "1.2.1",
+    "description": "Custom scenario simulation with Mixtape example.",
+    "homePage": ""
+}

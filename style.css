@@ -1,0 +1,62 @@
+/* Scenario Sim Pro Styles */
+.sim-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    min-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--borderColor);
+    padding-bottom: 10px;
+}
+
+.sim-api-box {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sim-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.sim-input {
+    width: 100%;
+    background: var(--inputColor) !important;
+    color: var(--textColor) !important;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.sim-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.sim-result {
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(0,0,0,0.4);
+    border-left: 4px solid var(--puchlineColor);
+    white-space: pre-wrap;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
